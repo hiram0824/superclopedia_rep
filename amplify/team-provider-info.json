@@ -14,6 +14,12 @@
     "categories": {
       "auth": {
         "superclopediarep30937460": {}
+      },
+      "api": {
+        "superclopediarep": {}
+      },
+      "storage": {
+        "s3323345b2": {}
       }
     }
   }
