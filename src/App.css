@@ -1,11 +1,69 @@
 .App {
-  text-align: center;
+  /* Other styles... */
+  background-image: url("../public/DCV2.jpg");
+  background-repeat: no-repeat;
+  background-size: cover;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  color: white;
+  justify-content: center;
+}
+.App h1 {
+  font-weight: bold;
+  color: white;
+  background-color: navy;
+  padding: 10px;
+  margin-bottom: 20px;
+}
+.App h2 {
+  font-weight: bold;
+  color: white;
+  background-color: darkblue;
+  padding: 8px;
+  margin-bottom: 10px;
+}
+.App button {
+  margin-top: 10px;
+  color: white;
+  background-color: #333;
+  border: none;
+  padding: 10px 20px;
+  cursor: pointer;
+}
+
+.App button:hover {
+  background-color: #222;
 }
 
 .App-logo {
   height: 40vmin;
   pointer-events: none;
 }
+.entry {
+  margin-bottom: 20px;
+  padding: 20px;
+  border: 2px solid black;
+}
+
+.entry-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.image-container {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+
+.image-container img {
+  width: 200px; /* Adjust the width as needed */
+  height: auto;
+}
+
+
 
 @media (prefers-reduced-motion: no-preference) {
   .App-logo {

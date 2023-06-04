@@ -7,3 +7,5 @@
 export { default as studioTheme } from "./studioTheme";
 export { default as NoteCreateForm } from "./NoteCreateForm";
 export { default as NoteUpdateForm } from "./NoteUpdateForm";
+export { default as TeamCreateForm } from "./TeamCreateForm";
+export { default as TeamUpdateForm } from "./TeamUpdateForm";

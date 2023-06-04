@@ -1,6 +1,19 @@
 type Note @model @auth(rules: [ { allow: public } ] ){
   id: ID!
   name: String!
+  alias: String
   description: String
+  abilities: String
+  affiliations: String
+  location: String
+  image: String
+}
+type Team @model @auth(rules: [ { allow: public } ] ){
+  id: ID!
+  name: String!
+  leader: String
+  headquarters: String
+  members: String
+  info: String
   image: String
 }

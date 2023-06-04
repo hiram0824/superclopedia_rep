@@ -24,24 +24,42 @@ export default function NoteCreateForm(props) {
   } = props;
   const initialValues = {
     name: "",
+    alias: "",
     description: "",
+    abilities: "",
+    affiliations: "",
+    location: "",
     image: "",
   };
   const [name, setName] = React.useState(initialValues.name);
+  const [alias, setAlias] = React.useState(initialValues.alias);
   const [description, setDescription] = React.useState(
     initialValues.description
   );
+  const [abilities, setAbilities] = React.useState(initialValues.abilities);
+  const [affiliations, setAffiliations] = React.useState(
+    initialValues.affiliations
+  );
+  const [location, setLocation] = React.useState(initialValues.location);
   const [image, setImage] = React.useState(initialValues.image);
   const [errors, setErrors] = React.useState({});
   const resetStateValues = () => {
     setName(initialValues.name);
+    setAlias(initialValues.alias);
     setDescription(initialValues.description);
+    setAbilities(initialValues.abilities);
+    setAffiliations(initialValues.affiliations);
+    setLocation(initialValues.location);
     setImage(initialValues.image);
     setErrors({});
   };
   const validations = {
     name: [{ type: "Required" }],
+    alias: [],
     description: [],
+    abilities: [],
+    affiliations: [],
+    location: [],
     image: [],
   };
   const runValidationTasks = async (
@@ -71,7 +89,11 @@ export default function NoteCreateForm(props) {
         event.preventDefault();
         let modelFields = {
           name,
+          alias,
           description,
+          abilities,
+          affiliations,
+          location,
           image,
         };
         const validationResponses = await Promise.all(
@@ -128,7 +150,11 @@ export default function NoteCreateForm(props) {
           if (onChange) {
             const modelFields = {
               name: value,
+              alias,
               description,
+              abilities,
+              affiliations,
+              location,
               image,
             };
             const result = onChange(modelFields);
@@ -145,6 +171,36 @@ export default function NoteCreateForm(props) {
         {...getOverrideProps(overrides, "name")}
       ></TextField>
       <TextField
+        label="Alias"
+        isRequired={false}
+        isReadOnly={false}
+        value={alias}
+        onChange={(e) => {
+          let { value } = e.target;
+          if (onChange) {
+            const modelFields = {
+              name,
+              alias: value,
+              description,
+              abilities,
+              affiliations,
+              location,
+              image,
+            };
+            const result = onChange(modelFields);
+            value = result?.alias ?? value;
+          }
+          if (errors.alias?.hasError) {
+            runValidationTasks("alias", value);
+          }
+          setAlias(value);
+        }}
+        onBlur={() => runValidationTasks("alias", alias)}
+        errorMessage={errors.alias?.errorMessage}
+        hasError={errors.alias?.hasError}
+        {...getOverrideProps(overrides, "alias")}
+      ></TextField>
+      <TextField
         label="Description"
         isRequired={false}
         isReadOnly={false}
@@ -154,7 +210,11 @@ export default function NoteCreateForm(props) {
           if (onChange) {
             const modelFields = {
               name,
+              alias,
               description: value,
+              abilities,
+              affiliations,
+              location,
               image,
             };
             const result = onChange(modelFields);
@@ -171,6 +231,96 @@ export default function NoteCreateForm(props) {
         {...getOverrideProps(overrides, "description")}
       ></TextField>
       <TextField
+        label="Abilities"
+        isRequired={false}
+        isReadOnly={false}
+        value={abilities}
+        onChange={(e) => {
+          let { value } = e.target;
+          if (onChange) {
+            const modelFields = {
+              name,
+              alias,
+              description,
+              abilities: value,
+              affiliations,
+              location,
+              image,
+            };
+            const result = onChange(modelFields);
+            value = result?.abilities ?? value;
+          }
+          if (errors.abilities?.hasError) {
+            runValidationTasks("abilities", value);
+          }
+          setAbilities(value);
+        }}
+        onBlur={() => runValidationTasks("abilities", abilities)}
+        errorMessage={errors.abilities?.errorMessage}
+        hasError={errors.abilities?.hasError}
+        {...getOverrideProps(overrides, "abilities")}
+      ></TextField>
+      <TextField
+        label="Affiliations"
+        isRequired={false}
+        isReadOnly={false}
+        value={affiliations}
+        onChange={(e) => {
+          let { value } = e.target;
+          if (onChange) {
+            const modelFields = {
+              name,
+              alias,
+              description,
+              abilities,
+              affiliations: value,
+              location,
+              image,
+            };
+            const result = onChange(modelFields);
+            value = result?.affiliations ?? value;
+          }
+          if (errors.affiliations?.hasError) {
+            runValidationTasks("affiliations", value);
+          }
+          setAffiliations(value);
+        }}
+        onBlur={() => runValidationTasks("affiliations", affiliations)}
+        errorMessage={errors.affiliations?.errorMessage}
+        hasError={errors.affiliations?.hasError}
+        {...getOverrideProps(overrides, "affiliations")}
+      ></TextField>
+      <TextField
+        label="Location"
+        isRequired={false}
+        isReadOnly={false}
+        value={location}
+        onChange={(e) => {
+          let { value } = e.target;
+          if (onChange) {
+            const modelFields = {
+              name,
+              alias,
+              description,
+              abilities,
+              affiliations,
+              location: value,
+              image,
+            };
+            const result = onChange(modelFields);
+            value = result?.location ?? value;
+          }
+          if (errors.location?.hasError) {
+            runValidationTasks("location", value);
+          }
+          setLocation(value);
+        }}
+        onBlur={() => runValidationTasks("location", location)}
+        errorMessage={errors.location?.errorMessage}
+        hasError={errors.location?.hasError}
+        {...getOverrideProps(overrides, "location")}
+      ></TextField>
+      <TextField
         label="Image"
         isRequired={false}
         isReadOnly={false}
@@ -180,7 +330,11 @@ export default function NoteCreateForm(props) {
           if (onChange) {
             const modelFields = {
               name,
+              alias,
               description,
+              abilities,
+              affiliations,
+              location,
               image: value,
             };
             const result = onChange(modelFields);

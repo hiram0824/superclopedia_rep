@@ -8,13 +8,12 @@
 import * as React from "react";
 import { Button, Flex, Grid, TextField } from "@aws-amplify/ui-react";
 import { getOverrideProps } from "@aws-amplify/ui-react/internal";
-import { Note } from "../models";
+import { Team } from "../models";
 import { fetchByPath, validateField } from "./utils";
 import { DataStore } from "aws-amplify";
-export default function NoteUpdateForm(props) {
+export default function TeamCreateForm(props) {
   const {
-    id: idProp,
-    note: noteModelProp,
+    clearOnSuccess = true,
     onSuccess,
     onError,
     onSubmit,
@@ -25,56 +24,36 @@ export default function NoteUpdateForm(props) {
   } = props;
   const initialValues = {
     name: "",
-    alias: "",
-    description: "",
-    abilities: "",
-    affiliations: "",
-    location: "",
+    leader: "",
+    headquarters: "",
+    members: "",
+    info: "",
     image: "",
   };
   const [name, setName] = React.useState(initialValues.name);
-  const [alias, setAlias] = React.useState(initialValues.alias);
-  const [description, setDescription] = React.useState(
-    initialValues.description
+  const [leader, setLeader] = React.useState(initialValues.leader);
+  const [headquarters, setHeadquarters] = React.useState(
+    initialValues.headquarters
   );
-  const [abilities, setAbilities] = React.useState(initialValues.abilities);
-  const [affiliations, setAffiliations] = React.useState(
-    initialValues.affiliations
-  );
-  const [location, setLocation] = React.useState(initialValues.location);
+  const [members, setMembers] = React.useState(initialValues.members);
+  const [info, setInfo] = React.useState(initialValues.info);
   const [image, setImage] = React.useState(initialValues.image);
   const [errors, setErrors] = React.useState({});
   const resetStateValues = () => {
-    const cleanValues = noteRecord
-      ? { ...initialValues, ...noteRecord }
-      : initialValues;
-    setName(cleanValues.name);
-    setAlias(cleanValues.alias);
-    setDescription(cleanValues.description);
-    setAbilities(cleanValues.abilities);
-    setAffiliations(cleanValues.affiliations);
-    setLocation(cleanValues.location);
-    setImage(cleanValues.image);
+    setName(initialValues.name);
+    setLeader(initialValues.leader);
+    setHeadquarters(initialValues.headquarters);
+    setMembers(initialValues.members);
+    setInfo(initialValues.info);
+    setImage(initialValues.image);
     setErrors({});
   };
-  const [noteRecord, setNoteRecord] = React.useState(noteModelProp);
-  React.useEffect(() => {
-    const queryData = async () => {
-      const record = idProp
-        ? await DataStore.query(Note, idProp)
-        : noteModelProp;
-      setNoteRecord(record);
-    };
-    queryData();
-  }, [idProp, noteModelProp]);
-  React.useEffect(resetStateValues, [noteRecord]);
   const validations = {
     name: [{ type: "Required" }],
-    alias: [],
-    description: [],
-    abilities: [],
-    affiliations: [],
-    location: [],
+    leader: [],
+    headquarters: [],
+    members: [],
+    info: [],
     image: [],
   };
   const runValidationTasks = async (
@@ -104,11 +83,10 @@ export default function NoteUpdateForm(props) {
         event.preventDefault();
         let modelFields = {
           name,
-          alias,
-          description,
-          abilities,
-          affiliations,
-          location,
+          leader,
+          headquarters,
+          members,
+          info,
           image,
         };
         const validationResponses = await Promise.all(
@@ -139,13 +117,12 @@ export default function NoteUpdateForm(props) {
               modelFields[key] = undefined;
             }
           });
-          await DataStore.save(
-            Note.copyOf(noteRecord, (updated) => {
-              Object.assign(updated, modelFields);
-            })
-          );
+          await DataStore.save(new Team(modelFields));
           if (onSuccess) {
             onSuccess(modelFields);
+          }
+          if (clearOnSuccess) {
+            resetStateValues();
           }
         } catch (err) {
           if (onError) {
@@ -153,7 +130,7 @@ export default function NoteUpdateForm(props) {
           }
         }
       }}
-      {...getOverrideProps(overrides, "NoteUpdateForm")}
+      {...getOverrideProps(overrides, "TeamCreateForm")}
       {...rest}
     >
       <TextField
@@ -166,11 +143,10 @@ export default function NoteUpdateForm(props) {
           if (onChange) {
             const modelFields = {
               name: value,
-              alias,
-              description,
-              abilities,
-              affiliations,
-              location,
+              leader,
+              headquarters,
+              members,
+              info,
               image,
             };
             const result = onChange(modelFields);
@@ -187,154 +163,120 @@ export default function NoteUpdateForm(props) {
         {...getOverrideProps(overrides, "name")}
       ></TextField>
       <TextField
-        label="Alias"
+        label="Leader"
         isRequired={false}
         isReadOnly={false}
-        value={alias}
+        value={leader}
         onChange={(e) => {
           let { value } = e.target;
           if (onChange) {
             const modelFields = {
               name,
-              alias: value,
-              description,
-              abilities,
-              affiliations,
-              location,
+              leader: value,
+              headquarters,
+              members,
+              info,
               image,
             };
             const result = onChange(modelFields);
-            value = result?.alias ?? value;
+            value = result?.leader ?? value;
           }
-          if (errors.alias?.hasError) {
-            runValidationTasks("alias", value);
+          if (errors.leader?.hasError) {
+            runValidationTasks("leader", value);
           }
-          setAlias(value);
+          setLeader(value);
         }}
-        onBlur={() => runValidationTasks("alias", alias)}
-        errorMessage={errors.alias?.errorMessage}
-        hasError={errors.alias?.hasError}
-        {...getOverrideProps(overrides, "alias")}
+        onBlur={() => runValidationTasks("leader", leader)}
+        errorMessage={errors.leader?.errorMessage}
+        hasError={errors.leader?.hasError}
+        {...getOverrideProps(overrides, "leader")}
       ></TextField>
       <TextField
-        label="Description"
+        label="Headquarters"
         isRequired={false}
         isReadOnly={false}
-        value={description}
+        value={headquarters}
         onChange={(e) => {
           let { value } = e.target;
           if (onChange) {
             const modelFields = {
               name,
-              alias,
-              description: value,
-              abilities,
-              affiliations,
-              location,
+              leader,
+              headquarters: value,
+              members,
+              info,
               image,
             };
             const result = onChange(modelFields);
-            value = result?.description ?? value;
+            value = result?.headquarters ?? value;
           }
-          if (errors.description?.hasError) {
-            runValidationTasks("description", value);
+          if (errors.headquarters?.hasError) {
+            runValidationTasks("headquarters", value);
           }
-          setDescription(value);
+          setHeadquarters(value);
         }}
-        onBlur={() => runValidationTasks("description", description)}
-        errorMessage={errors.description?.errorMessage}
-        hasError={errors.description?.hasError}
-        {...getOverrideProps(overrides, "description")}
+        onBlur={() => runValidationTasks("headquarters", headquarters)}
+        errorMessage={errors.headquarters?.errorMessage}
+        hasError={errors.headquarters?.hasError}
+        {...getOverrideProps(overrides, "headquarters")}
       ></TextField>
       <TextField
-        label="Abilities"
+        label="Members"
         isRequired={false}
         isReadOnly={false}
-        value={abilities}
+        value={members}
         onChange={(e) => {
           let { value } = e.target;
           if (onChange) {
             const modelFields = {
               name,
-              alias,
-              description,
-              abilities: value,
-              affiliations,
-              location,
+              leader,
+              headquarters,
+              members: value,
+              info,
               image,
             };
             const result = onChange(modelFields);
-            value = result?.abilities ?? value;
+            value = result?.members ?? value;
           }
-          if (errors.abilities?.hasError) {
-            runValidationTasks("abilities", value);
+          if (errors.members?.hasError) {
+            runValidationTasks("members", value);
           }
-          setAbilities(value);
+          setMembers(value);
         }}
-        onBlur={() => runValidationTasks("abilities", abilities)}
-        errorMessage={errors.abilities?.errorMessage}
-        hasError={errors.abilities?.hasError}
-        {...getOverrideProps(overrides, "abilities")}
+        onBlur={() => runValidationTasks("members", members)}
+        errorMessage={errors.members?.errorMessage}
+        hasError={errors.members?.hasError}
+        {...getOverrideProps(overrides, "members")}
       ></TextField>
       <TextField
-        label="Affiliations"
+        label="Info"
         isRequired={false}
         isReadOnly={false}
-        value={affiliations}
+        value={info}
         onChange={(e) => {
           let { value } = e.target;
           if (onChange) {
             const modelFields = {
               name,
-              alias,
-              description,
-              abilities,
-              affiliations: value,
-              location,
+              leader,
+              headquarters,
+              members,
+              info: value,
               image,
             };
             const result = onChange(modelFields);
-            value = result?.affiliations ?? value;
+            value = result?.info ?? value;
           }
-          if (errors.affiliations?.hasError) {
-            runValidationTasks("affiliations", value);
+          if (errors.info?.hasError) {
+            runValidationTasks("info", value);
           }
-          setAffiliations(value);
+          setInfo(value);
         }}
-        onBlur={() => runValidationTasks("affiliations", affiliations)}
-        errorMessage={errors.affiliations?.errorMessage}
-        hasError={errors.affiliations?.hasError}
-        {...getOverrideProps(overrides, "affiliations")}
-      ></TextField>
-      <TextField
-        label="Location"
-        isRequired={false}
-        isReadOnly={false}
-        value={location}
-        onChange={(e) => {
-          let { value } = e.target;
-          if (onChange) {
-            const modelFields = {
-              name,
-              alias,
-              description,
-              abilities,
-              affiliations,
-              location: value,
-              image,
-            };
-            const result = onChange(modelFields);
-            value = result?.location ?? value;
-          }
-          if (errors.location?.hasError) {
-            runValidationTasks("location", value);
-          }
-          setLocation(value);
-        }}
-        onBlur={() => runValidationTasks("location", location)}
-        errorMessage={errors.location?.errorMessage}
-        hasError={errors.location?.hasError}
-        {...getOverrideProps(overrides, "location")}
+        onBlur={() => runValidationTasks("info", info)}
+        errorMessage={errors.info?.errorMessage}
+        hasError={errors.info?.hasError}
+        {...getOverrideProps(overrides, "info")}
       ></TextField>
       <TextField
         label="Image"
@@ -346,11 +288,10 @@ export default function NoteUpdateForm(props) {
           if (onChange) {
             const modelFields = {
               name,
-              alias,
-              description,
-              abilities,
-              affiliations,
-              location,
+              leader,
+              headquarters,
+              members,
+              info,
               image: value,
             };
             const result = onChange(modelFields);
@@ -371,14 +312,13 @@ export default function NoteUpdateForm(props) {
         {...getOverrideProps(overrides, "CTAFlex")}
       >
         <Button
-          children="Reset"
+          children="Clear"
           type="reset"
           onClick={(event) => {
             event.preventDefault();
             resetStateValues();
           }}
-          isDisabled={!(idProp || noteModelProp)}
-          {...getOverrideProps(overrides, "ResetButton")}
+          {...getOverrideProps(overrides, "ClearButton")}
         ></Button>
         <Flex
           gap="15px"
@@ -388,10 +328,7 @@ export default function NoteUpdateForm(props) {
             children="Submit"
             type="submit"
             variation="primary"
-            isDisabled={
-              !(idProp || noteModelProp) ||
-              Object.values(errors).some((e) => e?.hasError)
-            }
+            isDisabled={Object.values(errors).some((e) => e?.hasError)}
             {...getOverrideProps(overrides, "SubmitButton")}
           ></Button>
         </Flex>

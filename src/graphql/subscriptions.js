@@ -6,7 +6,11 @@ export const onCreateNote = /* GraphQL */ `
     onCreateNote(filter: $filter) {
       id
       name
+      alias
       description
+      abilities
+      affiliations
+      location
       image
       createdAt
       updatedAt
@@ -18,7 +22,11 @@ export const onUpdateNote = /* GraphQL */ `
     onUpdateNote(filter: $filter) {
       id
       name
+      alias
       description
+      abilities
+      affiliations
+      location
       image
       createdAt
       updatedAt
@@ -30,7 +38,56 @@ export const onDeleteNote = /* GraphQL */ `
     onDeleteNote(filter: $filter) {
       id
       name
+      alias
       description
+      abilities
+      affiliations
+      location
+      image
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const onCreateTeam = /* GraphQL */ `
+  subscription OnCreateTeam($filter: ModelSubscriptionTeamFilterInput) {
+    onCreateTeam(filter: $filter) {
+      id
+      name
+      leader
+      headquarters
+      members
+      info
+      image
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const onUpdateTeam = /* GraphQL */ `
+  subscription OnUpdateTeam($filter: ModelSubscriptionTeamFilterInput) {
+    onUpdateTeam(filter: $filter) {
+      id
+      name
+      leader
+      headquarters
+      members
+      info
+      image
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const onDeleteTeam = /* GraphQL */ `
+  subscription OnDeleteTeam($filter: ModelSubscriptionTeamFilterInput) {
+    onDeleteTeam(filter: $filter) {
+      id
+      name
+      leader
+      headquarters
+      members
+      info
       image
       createdAt
       updatedAt
